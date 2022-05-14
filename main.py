@@ -1,2 +1,2 @@
 class HerokuApp:
-    app_url = ""  # Fill your heroku app url here
+    app_url = "https://protected-chamber-08992.herokuapp.com"  # Fill your heroku app url here
