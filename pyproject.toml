@@ -13,6 +13,7 @@ requests = "^2.27.1"
 pytest = "^7.1.2"
 types-requests = "^2.27.25"
 uvicorn = "^0.17.6"
+fastapi = "^0.77.1"
 
 
 
