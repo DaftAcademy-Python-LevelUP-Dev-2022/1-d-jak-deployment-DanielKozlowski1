@@ -17,7 +17,7 @@ jobs:
         id: setup-python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.10.3
       #----------------------------------------------
       #  -----  install & configure poetry  -----
       #----------------------------------------------
@@ -53,17 +53,10 @@ jobs:
       #----------------------------------------------
       - name: Run linter
         run: |
-            poetry run python -m black --check heroku_app tests
+            poetry run python -m black --check .
             poetry run python -m autoflake \
                 --check --recursive --remove-all-unused-imports --expand-star-imports \
-                heroku_app tests
-            poetry run python -m isort --check-only heroku_app tests
-            poetry run python -m mypy heroku_app tests
-            poetry run python -m bandit --configfile .bandit.yaml --recursive heroku_app tests
-      #----------------------------------------------
-      #              run test suite
-      #----------------------------------------------
-      - name: Run tests
-        run: |
-          source .venv/bin/activate
-          poetry run python -m pytest tests/
+                .
+            poetry run python -m isort --check-only .
+            poetry run python -m mypy .
+            poetry run python -m bandit --configfile .bandit.yaml --recursive .
