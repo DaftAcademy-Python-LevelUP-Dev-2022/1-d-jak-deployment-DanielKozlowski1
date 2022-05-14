@@ -1,4 +1,3 @@
-import datetime
 import unittest
 import urllib.parse
 
@@ -19,7 +18,12 @@ class HerokuSetupTest(unittest.TestCase):
 
     def test_retrieve_404(self):
         # At least one of those should be 404, unless we are really unlucky
-        try_dates = ["/1994-12-29", "/1995-11-28", "/2054-01-05", "/2021-02-04"]
+        try_dates = [
+            "/1994-12-29",
+            "/1995-11-28",
+            "/2054-01-05",
+            "/2021-02-04",
+        ]
         response_404 = None
         for date in try_dates:
             retrieve_response = requests.get(self.app_path + date)

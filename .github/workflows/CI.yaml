@@ -53,13 +53,13 @@ jobs:
       #----------------------------------------------
       - name: Run linter
         run: |
-            poetry run python -m black --check ceader tests
+            poetry run python -m black --check heroku_app tests
             poetry run python -m autoflake \
                 --check --recursive --remove-all-unused-imports --expand-star-imports \
-                ceader tests
-            poetry run python -m isort --check-only ceader tests
-            poetry run python -m mypy ceader tests
-            poetry run python -m bandit --configfile .bandit.yaml --recursive ceader tests
+                heroku_app tests
+            poetry run python -m isort --check-only heroku_app tests
+            poetry run python -m mypy heroku_app tests
+            poetry run python -m bandit --configfile .bandit.yaml --recursive heroku_app tests
       #----------------------------------------------
       #              run test suite
       #----------------------------------------------

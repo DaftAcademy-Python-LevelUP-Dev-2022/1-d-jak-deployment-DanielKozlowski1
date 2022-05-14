@@ -1,4 +1,5 @@
-LIBS        = $(MODULE) tests
+MODULE = .
+LIBS        = $(MODULE)
 PYTHON      = poetry run python
 PRECOMMIT   = poetry run pre-commit
 

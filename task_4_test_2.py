@@ -13,7 +13,8 @@ class HerokuSetupTest(unittest.TestCase):
 
     def test_add_correct_data(self):
         response = requests.put(
-            self.app_path, json={"date": "2022-03-01", "event": "Dzień Balearów"}
+            self.app_path,
+            json={"date": "2022-03-01", "event": "Dzień Balearów"},
         )
         self.assertEqual(response.status_code, 200)
         response_json = response.json()

@@ -1,4 +1,3 @@
-import datetime
 import unittest
 import urllib.parse
 
@@ -13,7 +12,8 @@ class HerokuSetupTest(unittest.TestCase):
 
     def test_retrieve_is_list(self):
         create_response = requests.put(
-            self.app_path, json={"date": "2022-03-21", "event": "Pierwszy dzień wiosny"}
+            self.app_path,
+            json={"date": "2022-03-21", "event": "Pierwszy dzień wiosny"},
         )
         self.assertEqual(create_response.status_code, 200)
 
