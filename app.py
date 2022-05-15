@@ -10,7 +10,8 @@ class Settings(BaseSettings):
 
 
 class EventCounter(BaseModel):
-    received_data: Dict[str, Any]
+    event: str
+    date: str
 
 
 app = FastAPI()
@@ -53,17 +54,16 @@ def get_day(name: str, number: int):
         if days.get(number, False) == name:
             return days[number]
         else:
-            return HTTPException(status_code=400, detail="Invalid day!")
+            raise HTTPException(status_code=400, detail="Invalid day!")
     else:
-        return HTTPException(status_code=400, detail="Number higher than 7!")
+        raise HTTPException(status_code=400, detail="Number higher than 7!")
 
 
 @app.put("/events", status_code=201, response_model=EventCounter)
 def put_event(data: EventCounter):
-
-    new_data = data.received_data.copy()
-    new_data["name"] = new_data["event"]
-    new_data.pop("name")
+    new_data: Dict[str, Any] = {}
+    new_data["name"] = data.event
+    new_data["date"] = data.date
     new_data["date_added"] = str(datetime.date.today())
     new_data["id"] = settings.events_counter
 
