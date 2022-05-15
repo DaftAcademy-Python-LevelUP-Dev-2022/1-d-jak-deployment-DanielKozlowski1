@@ -86,7 +86,7 @@ def put_event(data: EventCounterRq):
     return EventCounterRs(**fin_dict)
 
 
-@app.get("/event/{date}", response_model=EventsListRs)
+@app.get("/event/{date}", status_code=200, response_model=EventsListRs)
 def get_event(date: str):
 
     try:
