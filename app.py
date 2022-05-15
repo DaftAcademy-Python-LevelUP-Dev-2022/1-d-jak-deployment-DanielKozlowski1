@@ -1,5 +1,4 @@
 import datetime
-from typing import Dict
 
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, BaseSettings
@@ -15,7 +14,8 @@ class EventCounterRq(BaseModel):
 
 
 class EventCounterRs(BaseModel):
-    received: Dict
+    name: str
+    date: str
     id: int
     date_added: str
 
@@ -68,14 +68,13 @@ def get_day(name: str, number: int):
 @app.put("/events", status_code=200, response_model=EventCounterRs)
 def put_event(data: EventCounterRq):
 
-    new_data = {}
-    new_data["name"] = data.event
-    new_data["date"] = data.date
+    name = data.event
+    date = data.date
     id = settings.events_counter
     settings.events_counter += 1
     date_added = str(datetime.date.today())
 
-    return EventCounterRs(received=new_data, id=id, date_added=date_added)
+    return EventCounterRs(name=name, date=date, id=id, date_added=date_added)
 
 
 # @app.get("/hello/{name}", response_model=HelloResp)
