@@ -18,6 +18,7 @@ class HerokuSetupTest(unittest.TestCase):
         self.assertEqual(create_response.status_code, 200)
 
         retrieve_response = requests.get(self.app_path + "/2022-03-21")
+        print(retrieve_response, "dupa")
 
         self.assertEqual(retrieve_response.status_code, 200)
         response_json = retrieve_response.json()
