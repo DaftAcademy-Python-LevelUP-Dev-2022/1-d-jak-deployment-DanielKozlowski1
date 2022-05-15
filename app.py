@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Request
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException, Request
 
 app = FastAPI()
 
@@ -7,10 +6,6 @@ app = FastAPI()
 @app.get("/")
 def root():
     return {"start": "1970-01-01"}
-
-
-class HelloResp(BaseModel):
-    msg: str
 
 
 @app.post(path="/method", status_code=201)
@@ -25,6 +20,28 @@ def get_post():
 )
 async def get_methods(request: Request):
     return {"method": request.method}
+
+
+days = {
+    1: "monday",
+    2: "tuesday",
+    3: "wednesday",
+    4: "thursday",
+    5: "friday",
+    6: "saturday",
+    7: "sunday",
+}
+
+
+@app.get("/day", status_code=200)
+def get_day(name: str, number: int):
+    if number in days:
+        if days.get(number, False) == "name":
+            return days[number]
+        else:
+            return HTTPException(status_code=400, detail="Invalid day!")
+    else:
+        return HTTPException(status_code=400, detail="Number higher than 7!")
 
 
 # @app.get("/hello/{name}", response_model=HelloResp)
@@ -44,3 +61,6 @@ async def get_methods(request: Request):
 # @app.post("/dej/mi/coś", response_model=GiveMeSomethingResp)
 # def receive_something(rq: GiveMeSomethingRq):
 #     return GiveMeSomethingResp(received=rq.dict())
+
+# class HelloResp(BaseModel):
+#     msg: str
