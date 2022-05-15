@@ -2,14 +2,14 @@ import datetime
 from typing import Any, Dict
 
 from fastapi import FastAPI, HTTPException, Request
-from pydantic import BaseSettings
+from pydantic import BaseModel, BaseSettings
 
 
 class Settings(BaseSettings):
     events_counter: int = 0
 
 
-class EventCounter:
+class EventCounter(BaseModel):
     received_data: Dict[str, Any]
 
 
