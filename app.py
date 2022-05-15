@@ -14,7 +14,7 @@ class EventCounterRq(BaseModel):
     date: str
 
 
-class EventCounterRs(BaseModel):
+class EventCounterResponse(BaseModel):
     name: str
     date: str
     id: int
@@ -24,7 +24,7 @@ class EventCounterRs(BaseModel):
 app = FastAPI()
 settings = Settings()
 
-events: List[EventCounterRs] = []
+events: List[EventCounterResponse] = []
 
 
 @app.get("/")
@@ -68,7 +68,7 @@ def get_day(name: str, number: int):
         raise HTTPException(status_code=400, detail="Number higher than 7!")
 
 
-@app.put("/events", status_code=200, response_model=EventCounterRs)
+@app.put("/events", status_code=200, response_model=EventCounterResponse)
 def put_event(data: EventCounterRq):
 
     name = data.event
@@ -77,13 +77,19 @@ def put_event(data: EventCounterRq):
     settings.events_counter += 1
     date_added = str(datetime.date.today())
 
-    res = EventCounterRs(name=name, date=date, id=id, date_added=date_added)
+    res = EventCounterResponse(
+        name=name, date=date, id=id, date_added=date_added
+    )
     events.append(res)
 
     return res
 
 
-@app.get("/event/{date}", status_code=200, response_model=List[EventCounterRs])
+@app.get(
+    "/events/{date}",
+    status_code=200,
+    response_model=List[EventCounterResponse],
+)
 def get_event(date: str):
 
     try:
@@ -91,7 +97,7 @@ def get_event(date: str):
     except:
         raise HTTPException(status_code=400, detail="Invalid date format")
 
-    final_events: List[EventCounterRs] = []
+    final_events: List[EventCounterResponse] = []
 
     for event in events:
         if event.date == date:
