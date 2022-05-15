@@ -50,7 +50,7 @@ days = {
 @app.get("/day", status_code=200)
 def get_day(name: str, number: int):
     if number in days:
-        if days.get(number, False) == "name":
+        if days.get(number, False) == name:
             return days[number]
         else:
             return HTTPException(status_code=400, detail="Invalid day!")
