@@ -1,5 +1,5 @@
 import datetime
-from typing import Any, Dict, List
+from typing import List
 
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, BaseSettings
@@ -24,7 +24,7 @@ class EventCounterRs(BaseModel):
 app = FastAPI()
 settings = Settings()
 
-events: List[Dict[str, Any]] = []
+events: List[EventCounterRs] = []
 
 
 @app.get("/")
@@ -76,10 +76,11 @@ def put_event(data: EventCounterRq):
     id = settings.events_counter
     settings.events_counter += 1
     date_added = str(datetime.date.today())
-    fin_dict = {"name": name, "date": date, "id": id, "date_added": date_added}
-    events.append(fin_dict)
 
-    return EventCounterRs(**fin_dict)
+    res = EventCounterRs(name=name, date=date, id=id, date_added=date_added)
+    events.append(res)
+
+    return res
 
 
 @app.get("/event/{date}", status_code=200, response_model=List[EventCounterRs])
@@ -90,14 +91,14 @@ def get_event(date: str):
     except:
         raise HTTPException(status_code=400, detail="Invalid date format")
 
-    final_events: List[Dict[str, Any]] = []
+    final_events: List[EventCounterRs] = []
 
     for event in events:
-        if event["date"] == date:
+        if event.date == date:
             final_events.append(event)
 
     if len(final_events) > 0:
-        return [EventCounterRs(**d) for d in final_events]
+        return final_events
     else:
         raise HTTPException(status_code=404, detail="Didn't find any data")
 
