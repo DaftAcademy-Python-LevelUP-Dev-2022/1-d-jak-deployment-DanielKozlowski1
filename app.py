@@ -47,7 +47,7 @@ days = {
 }
 
 
-@app.get("/day", status_code=200)
+@app.get("/day/", status_code=200)
 def get_day(name: str, number: int):
     if number in days:
         if days.get(number, False) == name:
