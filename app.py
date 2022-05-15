@@ -21,10 +21,6 @@ class EventCounterRs(BaseModel):
     date_added: str
 
 
-class EventsListRs(BaseModel):
-    fin_list: List[Dict[str, Any]]
-
-
 app = FastAPI()
 settings = Settings()
 
@@ -86,11 +82,11 @@ def put_event(data: EventCounterRq):
     return EventCounterRs(**fin_dict)
 
 
-@app.get("/event/{date}", status_code=200, response_model=EventsListRs)
+@app.get("/event/{date}", status_code=200, response_model=List[EventCounterRs])
 def get_event(date: str):
 
     try:
-        _ = (datetime.datetime.strptime(date, "YYYY-MM-DD"),)
+        _ = (datetime.datetime.strptime(date, "%Y-%m-%d"),)
     except:
         raise HTTPException(status_code=400, detail="Invalid date format")
 
@@ -101,9 +97,7 @@ def get_event(date: str):
             final_events.append(event)
 
     if len(final_events) > 0:
-        return EventsListRs(
-            fin_list=[EventCounterRs(**d) for d in final_events]
-        )
+        return [EventCounterRs(**d) for d in final_events]
     else:
         raise HTTPException(status_code=404, detail="Didn't find any data")
 
