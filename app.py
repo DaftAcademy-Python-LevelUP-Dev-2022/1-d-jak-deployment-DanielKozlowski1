@@ -1,6 +1,20 @@
+import datetime
+from typing import Any, Dict
+
 from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseSettings
+
+
+class Settings(BaseSettings):
+    events_counter: int = 0
+
+
+class EventCounter:
+    received_data: Dict[str, Any]
+
 
 app = FastAPI()
+settings = Settings()
 
 
 @app.get("/")
@@ -42,6 +56,20 @@ def get_day(name: str, number: int):
             return HTTPException(status_code=400, detail="Invalid day!")
     else:
         return HTTPException(status_code=400, detail="Number higher than 7!")
+
+
+@app.put("/events", status_code=201, response_model=EventCounter)
+def put_event(data: EventCounter):
+
+    new_data = data.received_data.copy()
+    new_data["name"] = new_data["event"]
+    new_data.pop("name")
+    new_data["date_added"] = str(datetime.date.today())
+    new_data["id"] = settings.events_counter
+
+    settings.events_counter += 1
+
+    return new_data
 
 
 # @app.get("/hello/{name}", response_model=HelloResp)
