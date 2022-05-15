@@ -65,7 +65,7 @@ def get_day(name: str, number: int):
         raise HTTPException(status_code=400, detail="Number higher than 7!")
 
 
-@app.put("/events", status_code=201, response_model=EventCounterRs)
+@app.put("/events", status_code=200, response_model=EventCounterRs)
 def put_event(data: EventCounterRq):
 
     new_data = {}
